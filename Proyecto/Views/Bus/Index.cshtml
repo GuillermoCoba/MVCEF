@@ -1,0 +1,93 @@
+﻿@using Proyecto.Models
+@model List<BusCLS>
+@{
+    ViewBag.Title = "Index";
+    List<SelectListItem> listaMarca = (List<SelectListItem>)ViewBag.listaMarca;
+    List<SelectListItem> listaTipoBus = (List<SelectListItem>)ViewBag.listaTipoBus;
+    List<SelectListItem> listaModelo = (List<SelectListItem>)ViewBag.listaModelo;
+    List<SelectListItem> listaSucursal = (List<SelectListItem>)ViewBag.listaSucursal;
+}
+
+<h2>Bus</h2>
+@Html.ActionLink("Agregar", "Agregar", "Bus", null, new { @class = "btn btn-primary" })
+@using (Html.BeginForm("Index", "Bus", FormMethod.Post,new {@id="FrmFiltro" }))
+{
+<table class="table table-bordered table-hover" >
+    <thead>
+        <tr>
+            <td>@Html.LabelFor(p => Model[0].iidBus)</td>
+            <td>@Html.LabelFor(p => Model[0].placa)</td>
+            <td>@Html.LabelFor(p => Model[0].nombreModelo)</td>
+            <td>@Html.LabelFor(p => Model[0].nombreSucursal)</td>
+            <td>@Html.LabelFor(p => Model[0].nombreTipoBus)</td>
+            <td>Operaciones</td>
+           
+        </tr>
+        <tr>
+            <td>@Html.TextBox("iidBus", null, new { @class = "form-control" })</td>
+            <td>@Html.TextBox("placa", null, new { @class = "form-control" })</td>
+            <td>@Html.DropDownList("iidModelo", listaModelo, null, new { @class = "form-control" })</td>
+            <td>@Html.DropDownList("iidSucursal", listaSucursal, null, new { @class = "form-control" })</td>
+            <td>@Html.DropDownList("iidTipoBus", listaTipoBus, null, new { @class = "form-control" })</td>
+            <td>Operaciones</td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.iidBus</td>
+                <td>@item.placa</td>
+                <td>@item.nombreModelo</td>
+                <td>@item.nombreSucursal</td>
+                <td>@item.nombreTipoBus</td>
+                <td>
+                    @Html.ActionLink(" ", "Editar", "Bus", new { id = @item.iidBus }, new { @class = "glyphicon glyphicon-edit btn btn-primary " })
+                    <button type="button" onclick="mostrarPop(@item.iidBus)" class="glyphicon glyphicon-trash btn btn-danger" data-toggle="modal" data-target="#exampleModal"></button>
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+}
+@using (Html.BeginForm("Eliminar", "Bus", FormMethod.Post, new { @id = "frm" }))
+{
+    @Html.Hidden("iidBus");
+}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Desea eliminar el registro?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div style="padding:1em">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" onclick="Eliminar()" class="btn btn-info">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var FrmFiltro = document.getElementById("FrmFiltro")
+    var controller = document.getElementsByClassName("form-control");
+    var ncontroller=controller.length;
+    for(var i = 0;i<ncontroller;i++){
+        controller[i].onchange=function(){
+            FrmFiltro.submit();
+        }
+
+    }
+    function mostrarPop(iidBus) {
+        document.getElementById("iidBus").value = iidBus;
+    }
+    function Eliminar(){
+        var frm = document.getElementById("frm");
+        frm.submit();
+    }
+</script>

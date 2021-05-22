@@ -1,0 +1,35 @@
+﻿@using Proyecto.Models
+@model List<ViajeCLS>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Viajes</h2>
+@Html.ActionLink("Agregar", "Agregar", "Viaje", null, new { @class = "btn btn-primary" })
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td>@Html.LabelFor(p => Model[0].iidviaje)</td>
+            <td>@Html.LabelFor(p => Model[0].nombreOrigen)</td>
+            <td>@Html.LabelFor(p => Model[0].nombreDestino)</td>
+            <td>@Html.LabelFor(p => Model[0].placa)</td>
+            <td>Operaciones</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.iidviaje</td>
+                <td>@item.nombreOrigen</td>
+                <td>@item.nombreDestino</td>
+                <td>@item.placa</td>
+                <td>
+                    @Html.ActionLink(" ", "Editar", "Viaje",new {id = @item.iidviaje },new {@class = "glyphicon glyphicon-edit btn btn-primary " })
+                    @Html.ActionLink(" ", "Eliminar", "Viaje", new { id = @item.iidviaje }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

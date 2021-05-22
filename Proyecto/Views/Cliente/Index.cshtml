@@ -1,0 +1,76 @@
+﻿@using Proyecto.Models
+@model List<ClienteCLS>
+@{
+    ViewBag.Title = "Clientes";
+    List<SelectListItem> listaSexo = (List<SelectListItem>)ViewBag.lista;
+}
+
+<h2>Clientes</h2>
+@Html.ActionLink("Agregar","Agregar", "Cliente", null, new { @class = "btn btn-danger" })
+@using (Html.BeginForm("Index","Cliente",FormMethod.Post))
+{
+@Html.Label("Ingrese sexo del cliente")
+@Html.DropDownList("iidsexo", listaSexo)
+<input type="submit" value="Buscar" class="btn btn-success"/>
+<table class="table table-bordered table-hover" >
+    <thead>
+        <tr>
+            <td>@Html.LabelFor(p => Model[0].iidcliente)</td>
+            <td>@Html.LabelFor(p => Model[0].nombre)</td>
+            <td>@Html.LabelFor(p => Model[0].appaterno)</td>
+            <td>@Html.LabelFor(p => Model[0].apmaterno)</td>
+            <td>@Html.LabelFor(p => Model[0].telefonofijo)</td>
+            <td>Operaciones</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.iidcliente</td>
+                <td>@item.nombre</td>
+                <td>@item.appaterno</td>
+                <td>@item.apmaterno</td>
+                <td>@item.telefonofijo</td>
+                <td>
+                    @Html.ActionLink(" ", "Editar", "Cliente", new { id = @item.iidcliente }, new { @class = "glyphicon glyphicon-edit btn btn-primary" })
+                   @*@Html.ActionLink(" ", "Eliminar", "Cliente", new { id = @item.iidcliente},new { @class = "glyphicon glyphicon-trash btn btn-danger" })*@
+                    <button type="button" onclick="mostrarPop(@item.iidcliente)" class="glyphicon glyphicon-trash btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                        
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+@using(Html.BeginForm("Eliminar","Cliente",FormMethod.Post,new {@id="frmEliminar" }))
+{
+    @Html.Hidden("iidcliente");
+}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Desea eliminar el registro?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div style="padding:1em">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" onclick="Agregar()" class="btn btn-info">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function mostrarPop(iidcliente) {
+        document.getElementById("iidcliente").value = iidcliente;
+    }
+    function Agregar() {
+        var FrmEliminar = document.getElementById("frmEliminar")
+        FrmEliminar.submit();
+    }
+</script>
