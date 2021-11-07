@@ -1,0 +1,96 @@
+﻿@using Proyecto.Models
+@model List<RolCLS>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<button type="button" onclick="Agregar();" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
+Agregar
+</button>
+@using (Ajax.BeginForm("Filtro", "", new AjaxOptions {
+    HttpMethod = "POST",
+    UpdateTargetId = "divRol",
+    InsertionMode=InsertionMode.Replace
+},new { @id="frmFiltro"}))
+{
+    @Html.Label("Ingrese nombre rol")
+    @Html.TextBox("nombreRol", null,new { @class="form-control"})
+    <div id="divRol">
+        @Html.Partial("_TablaRol", Model);
+    </div>
+}
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+             @using (Ajax.BeginForm("Guardar", "Rol",null, new AjaxOptions
+             {
+                 HttpMethod = "POST",
+                 OnSuccess = "Guardar",
+                 UpdateTargetId="error"
+             }))
+             {
+                  @Html.Hidden("titulo")
+            <div class="modal-body">
+                <div>
+                    @Html.Label("Nombre");
+                    @Html.TextBox("nombre", null, new { @class = "form-control" })
+                </div> 
+                <div>
+                    @Html.Label("Descripción")
+                    @Html.TextBox("descripcion", null, new { @class = "form-control" })
+                </div>
+              </div>
+            <div class="modal-footer">
+                <button id="btnClose" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+             }
+            <div id="error"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var nombre = document.getElementById("nombre")
+    nombre.onkeyup = function () {
+        $("#frmFiltro").trigger("submit");
+    }
+    function Limpiar() {
+        document.getElementById("nombre").value = "";
+        document.getElementById("descripcion").value = "";
+        document.getElementById("error").innerHTML = "";
+    }
+    function Agregar() {
+        Limpiar();
+        document.getElementById("titulo").value= -1;
+    }
+    function Editar(id) {
+        Limpiar();
+        document.getElementById("titulo").value = id;
+
+        $.get("Rol/recuperarDatos/?titulo=" + id, function (data) {
+            document.getElementById("nombre").value = data.nombre;
+            document.getElementById("descripcion").value = data.descripcion;
+        })
+    }
+    function Guardar(resultado) {
+        if (resultado == "1" || resultado=="0") {
+            $("#frmFiltro").trigger("submit");
+            document.getElementById("btnClose").click();
+            alert("Se guardo correctamente");
+        }
+        else {
+            alert("Ocurrio un error");
+        }
+    }
+</script>

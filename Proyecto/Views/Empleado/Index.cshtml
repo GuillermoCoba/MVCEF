@@ -1,0 +1,77 @@
+﻿@using Proyecto.Models
+@model List<EmpleadoCLS>
+@{
+    ViewBag.Title = "Index";
+    List <SelectListItem> listaUsuario = (List<SelectListItem>)ViewBag.listaUsuario;
+}
+<h2>Empleados</h2>
+@Html.ActionLink("Agregar", "Agregar", "Empleado", null, new { @class = "btn btn-primary" })
+@using (Html.BeginForm("Index", "Empleado", FormMethod.Get,new {@id="FrmId" }))
+{
+@Html.Label("Ingresa el tipo de Usuario")
+@Html.DropDownList("iidtipoUsuario", listaUsuario)
+<table class="table table-bordered table-hover" >
+    <thead>
+        <tr>
+            <td> @Html.LabelFor(p => Model[0].iidEmpleado)</td>
+            <td> @Html.LabelFor(p => Model[0].nombre)</td>
+            <td> @Html.LabelFor(p => Model[0].apPaterno)</td>
+            <td> @Html.LabelFor(p => Model[0].nombreTipoUsuario)</td>
+            <td> @Html.LabelFor(p => Model[0].nombreTipoContrato)</td>
+            <td>Operaciones</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.iidEmpleado</td>
+            <td>@item.nombre</td>
+            <td>@item.apPaterno</td>
+            <td>@item.nombreTipoUsuario</td>
+            <td>@item.nombreTipoContrato</td>
+            <td>
+                @Html.ActionLink(" ", "Editar", "Empleado", new { id = @item.iidEmpleado }, new { @class = "glyphicon glyphicon-edit btn btn-primary " })
+                <button type="button" onclick="mostrarPop(@item.iidEmpleado)" class="glyphicon glyphicon-trash btn btn-danger" data-toggle="modal" data-target="#exampleModal"></button> 
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Desea eliminar el registro?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div style="padding:1em">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" onclick="Agregar()" class="btn btn-info">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("Eliminar", "Empleado", FormMethod.Post,new {@id="frmEmpleado" }))
+{
+    @Html.Hidden("iidEmpleado")
+}
+<script>
+    function mostrarPop(iidEmpleado) {
+        document.getElementById("iidEmpleado").value = iidEmpleado;
+    }
+    function Agregar() {
+        var frm = document.getElementById("frmEmpleado");
+        frm.submit();
+    }
+
+    var iidtipoUsuario = document.getElementById("iidtipoUsuario");
+    iidtipoUsuario.onchange=function(){
+        var frm = document.getElementById("FrmId");
+        frm.submit();
+    }
+</script>

@@ -1,0 +1,25 @@
+﻿@using Proyecto.Models
+@model List<UsuarioCLS>
+<table class="table table-bordered table-hover"  >
+    <thead>
+        <tr>
+            <th>Id Usuario</th>
+            <th>Nombre Persona</th>
+            <th>Nombre Usuario</th>
+            <th>Nombre Rol</th>
+            <th>Tipo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@item.iidusuario</th>
+                <th>@item.nombrePersona</th>
+                <th>@item.nombreusuario</th>
+                <th>@item.nombreRol</th>
+                <th>@item.nombreTipoEmpleado</th>
+            </tr>
+        }
+    </tbody>
+</table>
