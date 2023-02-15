@@ -20,6 +20,6 @@ namespace Proyecto.Models
         public Nullable<int> INDICECOLUMNA { get; set; }
         public Nullable<int> BHABILITADO { get; set; }
     
-        public virtual Viaje Viaje { get; set; }
+        public virtual Viaje Viaje { get; set;}
     }
 }
